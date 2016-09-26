@@ -1,0 +1,39 @@
+[nnLib|
+
+[Net|
+inputs: array;
+Layers: array;
+
+feed()
+]
+
+[Layers|
+Neurons: array|
+getOutput()
+]
+
+
+[Neuron|
+weight: float
+activationFunction: std::function|
+getOutput()
+]
+
+[TrainingManager|
+Datasets: array|
+train()
+]
+
+[ActivationsFunction|
+linear;
+sigmoid;
+tanh;
+step
+]
+
+[Dataset|
+inputs: array;
+outputs: array
+]
+
+]
