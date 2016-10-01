@@ -1,39 +1,42 @@
-[nnLib|
+[SNN|
 
 [Net|
-inputs: array;
-Layers: array;
-
+Links: array;
+Layers: array|
 feed()
+setHiddenFunction()
+setOutputFunction()
+randWeights()
+setWeights()
+getWeights()
+accessLayers()
 ]
 
 [Layers|
-Neurons: array|
-getOutput()
+Neurons: array
+type: unsigned int
+id: unsigned int|
+feed()
+setActivationFunction()
+accessNeurons()
 ]
 
 
 [Neuron|
+parent: Layer*
+value: float
+type: unsigned int
+id: unsigned int
+cacheValue: float|
+compute()
+store()
+]
+
+[Link|
+a: Neuron*
+b: Neuron*
 weight: float
-activationFunction: std::function|
-getOutput()
 ]
 
-[TrainingManager|
-Datasets: array|
-train()
-]
-
-[ActivationsFunction|
-linear;
-sigmoid;
-tanh;
-step
-]
-
-[Dataset|
-inputs: array;
-outputs: array
-]
 
 ]

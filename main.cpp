@@ -1,5 +1,4 @@
 /* Neural Network w/ Backprop training -> XOR function
-* Full Drogue
 */
 
 #include "snn.hpp"
@@ -8,7 +7,7 @@
 int main()
 {
 
-    snn::FFNet net(2, 4, 1, 1);
+    snn::FFNet net({2, 4, 1});
 
     snn::TrainingMan trainM(snn::BACKPROP);
 

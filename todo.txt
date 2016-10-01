@@ -1,0 +1,13 @@
+Layer:
+    -instances count (static member) (to define id)
+    -feed()
+
+FFNet:
+    -constructor
+    -feed()
+    -randWeights()
+    -setWeights()
+
+Neuron:
+    -compute()
+    -store()

@@ -2,40 +2,102 @@
 
 #include <vector>
 #include <functional>
+#include <string>
+
+#include "actFunctions.hpp"
+
 
 namespace snn
 {
 
-    struct Neuron
+    enum neuronTypes: unsigned int
     {
-        float weight;
 
+        INPUT = 1,
+        HIDDEN,
+        OUTPUT,
+        BIAS
+        
     };
 
-    struct Layer
+    enum layerTypes: unsigned int
     {
-        void setActivationFunction(std::function<float(float)> actFun);
-        std::vector<float> feed(std::vector<float> inputs);
+        INPUT = 1,
+        HIDDEN,
+        OUTPUT
+    };
 
-        unsigned int size();
+    struct Link
+    {
+        Neuron* a;
+        Neuron* b;
+
+        float weight;
+    };
+
+    struct Neuron
+    {
+        Layer* parent;
+        float value;
+        unsigned int type;
+        unsigned int id;
+
+        float compute();
+        void store(float value);
+
+        private:
+            float cacheValue;
+    };
+
+    class Layer
+    {
+        public:
+
+            Layer(unsigned int neuronsCount, unsigned int layerType);
+            ~Layer();
+
+            std::vector<float> feed(std::vector<float> inputs);
+
+            void setActivationFunction(std::function<float(float)> actFun);
+
+            std::vector<Neuron>* accessNeurons();
 
         private:
             std::vector<Neuron> m_neurons;
+            unsigned int m_neuronsCount = 0;
+
+            unsigned int m_type;
+            unsigned int m_id;
+
             std::function<float(float)> m_actFun = snn::FUN_SIGMOID;
+
+        friend float Neuron::compute(); //for m_actFun
     };
 
     class FFNet
     {
         public:
-            FFNet(unsigned int num_in, unsigned int num_hid, unsigned int num_out, unsigned int num_hidLayer);
+            FFNet();
             ~FFNet();
 
             std::vector<float> feed(std::vector<float> inputs);
 
+            void setOutputFunction(std::function<float(float)> actFun);
+            void setHiddenFunction(std::function<float(float)> actFun);
+
+            void randWeights();
+            void setWeights(std::vector<Link>);
+            std::vector<Link> getLinks();
+
+            std::vector<Layer>* accessLayers();
+
         private:
-            Layer m_inputs;
-            Layer m_outputs;
-            std::vector<Layer> m_hiddens;
+            std::vector<Layer> m_layers;
+            std::vector<Link> m_links;
+
+            std::function<float(float)> m_hidFun;
+            std::function<float(float)> m_outFun;
+
             
     };
 
