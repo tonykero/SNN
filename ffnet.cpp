@@ -54,10 +54,24 @@ std::vector<Neuron>* Layer::accessNeurons()
 
 /*****************************FFNet***************************/
 
-FFNet::FFNet()
+FFNet::FFNet(std::vector<unsigned int> layers)
 {
+    //create the layers
+    for(unsigned int i = 0; i < layers.size(); i++)
+    {   
+        if(i != 0 && i != layers.size())
+            Layer l(layers[i], layersType::HIDDEN);
+        else if(i == 0)
+            Layer l(layers[i], layersType::INPUT);
+        else if(i == layers.size())
+            Layer l(layers[i], layersType::OUTPUT);
+        
+        l.m_id = i;
 
-   
+        m_layers.push_back(l);
+    }
+
+    this->link();
 
 }
 
@@ -86,14 +100,19 @@ void FFNet::randWeights()
 
 }
 
-void FFNet::setWeights(std::vector<Link>)
+void FFNet::setLinks(std::vector<Link> links)
 {
-
+    m_links = links;
 }
 
 std::vector<Link> FFNet::getLinks()
 {
     return m_links;
+}
+
+void FFNet::link()
+{
+    
 }
 
 std::vector<Layer>* FFNet::accessLayers()

@@ -7,7 +7,7 @@
 int main()
 {
 
-    snn::FFNet net({2, 4, 1});
+    snn::FFNet net({3, 3, 1});
 
     snn::TrainingMan trainM(snn::BACKPROP);
 

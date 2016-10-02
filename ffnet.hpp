@@ -32,7 +32,7 @@ namespace snn
         Neuron* a;
         Neuron* b;
 
-        float weight;
+        float weight = 1.0f;
     };
 
     struct Neuron
@@ -42,6 +42,7 @@ namespace snn
         unsigned int type;
         unsigned int id;
 
+        //compute & store for future multi threading implementation
         float compute();
         void store(float value);
 
@@ -72,12 +73,13 @@ namespace snn
             std::function<float(float)> m_actFun = snn::FUN_SIGMOID;
 
         friend float Neuron::compute(); //for m_actFun
+        friend class FFNet;
     };
 
     class FFNet
     {
         public:
-            FFNet();
+            FFNet(std::vector<unsigned int> layers);
             ~FFNet();
 
             std::vector<float> feed(std::vector<float> inputs);
@@ -86,17 +88,19 @@ namespace snn
             void setHiddenFunction(std::function<float(float)> actFun);
 
             void randWeights();
-            void setWeights(std::vector<Link>);
+            void setLinks(std::vector<Link>);
             std::vector<Link> getLinks();
+            void link();
 
             std::vector<Layer>* accessLayers();
 
         private:
+
             std::vector<Layer> m_layers;
             std::vector<Link> m_links;
 
-            std::function<float(float)> m_hidFun;
-            std::function<float(float)> m_outFun;
+            std::function<float(float)> m_hidFun = snn::FUN_SIGMOID;
+            std::function<float(float)> m_outFun = snn::FUN_SIGMOID;
 
             
     };

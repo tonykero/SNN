@@ -6,8 +6,9 @@ FFNet:
     -constructor
     -feed()
     -randWeights()
-    -setWeights()
+    -link()
 
 Neuron:
+    -instances count (to define id)
     -compute()
     -store()
