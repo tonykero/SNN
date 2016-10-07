@@ -5,73 +5,18 @@ using namespace snn;
 /*****************************Neuron**************************/
 void Neuron::store(float val)
 {
-
+    //TODO: store()
 }
 
 float Neuron::compute()
 {
-
-}
-/*****************************Layer***************************/
-
-Layer::Layer(unsigned int neuronsCount, unsigned int layerType)
-{
-    m_neuronsCount = neuronsCount;
-    m_type = layerType;
-
-    for(unsigned int i = 0; i < m_neuronsCount; i++)//fill the neurons array
-    {
-        Neuron n;
-        n.type = m_type;
-        n.id = i;
-        n.parent = this;
-        n.value = 0.0f;
-
-        m_neurons.push_back(n);
-    }
-
-}
-
-Layer::~Layer()
-{
-
-}
-
-void Layer::setActivationFunction(std::function<float(float)> actFun)
-{
-    m_actFun = actFun;
-}
-
-std::vector<float> Layer::feed(std::vector<float> inputs)
-{
-    //TODO
-}
-
-std::vector<Neuron>* Layer::accessNeurons()
-{
-    return &m_neurons;
+    //TODO: compute()
 }
 
 /*****************************FFNet***************************/
 
-FFNet::FFNet(std::vector<unsigned int> layers)
+FFNet::FFNet(std::string script)
 {
-    //create the layers
-    for(unsigned int i = 0; i < layers.size(); i++)
-    {   
-        if(i != 0 && i != layers.size())
-            Layer l(layers[i], layersType::HIDDEN);
-        else if(i == 0)
-            Layer l(layers[i], layersType::INPUT);
-        else if(i == layers.size())
-            Layer l(layers[i], layersType::OUTPUT);
-        
-        l.m_id = i;
-
-        m_layers.push_back(l);
-    }
-
-    this->link();
 
 }
 
@@ -82,7 +27,7 @@ FFNet::~FFNet()
 
 std::vector<float> FFNet::feed(std::vector<float> inputs)
 {
-
+    //TODO: FFnet::feed()
 }
 
 void FFNet::setOutputFunction(std::function<float(float)> actFun)
@@ -97,7 +42,7 @@ void FFNet::setHiddenFunction(std::function<float(float)> actFun)
 
 void FFNet::randWeights()
 {
-
+    //TODO: randWeights()
 }
 
 void FFNet::setLinks(std::vector<Link> links)
@@ -110,12 +55,22 @@ std::vector<Link> FFNet::getLinks()
     return m_links;
 }
 
-void FFNet::link()
+void FFNet::link(std::string idA, std::string idB)
 {
-    
+
 }
 
-std::vector<Layer>* FFNet::accessLayers()
+void FFNet::unlink(std::string idA, std::string idB)
 {
-    return &m_layers;
+
+}
+
+void FFNet::add(unsigned int type)
+{
+
+}
+
+void FFNet::remove(std:string id)
+{
+
 }

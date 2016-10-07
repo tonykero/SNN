@@ -1,4 +1,6 @@
 /* Neural Network w/ Backprop training -> XOR function
+* 2 layers feedforward neural network 
+* 2 inputs 1 BIAS, 2 Hidden 1 Bias, 1 Output
 */
 
 #include "snn.hpp"
@@ -7,7 +9,7 @@
 int main()
 {
 
-    snn::FFNet net({3, 3, 1});
+    snn::FFNet net("");
 
     snn::TrainingMan trainM(snn::BACKPROP);
 

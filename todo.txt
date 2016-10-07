@@ -1,14 +1,12 @@
-Layer:
-    -instances count (static member) (to define id)
-    -feed()
-
 FFNet:
     -constructor
     -feed()
     -randWeights()
     -link()
+    -unlink
+    -add
+    -remove
 
 Neuron:
-    -instances count (to define id)
     -compute()
     -store()

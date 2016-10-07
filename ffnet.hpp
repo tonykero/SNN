@@ -10,7 +10,7 @@
 namespace snn
 {
 
-    enum neuronTypes: unsigned int
+    enum NType: unsigned int
     {
 
         INPUT = 1,
@@ -18,13 +18,6 @@ namespace snn
         OUTPUT,
         BIAS
         
-    };
-
-    enum layerTypes: unsigned int
-    {
-        INPUT = 1,
-        HIDDEN,
-        OUTPUT
     };
 
     struct Link
@@ -35,13 +28,19 @@ namespace snn
         float weight = 1.0f;
     };
 
+    struct Bias 
+    {
+        float output;
+        unsigned int num;
+        std::string id;
+    };
+
     struct Neuron
     {
-        Layer* parent;
-        float value;
+        float output;
         unsigned int type;
-        unsigned int id;
-
+        std::string id;
+        unsigned int num;
         //compute & store for future multi threading implementation
         float compute();
         void store(float value);
@@ -50,36 +49,11 @@ namespace snn
             float cacheValue;
     };
 
-    class Layer
-    {
-        public:
-
-            Layer(unsigned int neuronsCount, unsigned int layerType);
-            ~Layer();
-
-            std::vector<float> feed(std::vector<float> inputs);
-
-            void setActivationFunction(std::function<float(float)> actFun);
-
-            std::vector<Neuron>* accessNeurons();
-
-        private:
-            std::vector<Neuron> m_neurons;
-            unsigned int m_neuronsCount = 0;
-
-            unsigned int m_type;
-            unsigned int m_id;
-
-            std::function<float(float)> m_actFun = snn::FUN_SIGMOID;
-
-        friend float Neuron::compute(); //for m_actFun
-        friend class FFNet;
-    };
-
     class FFNet
     {
         public:
-            FFNet(std::vector<unsigned int> layers);
+            FFNet(std::string script);
+
             ~FFNet();
 
             std::vector<float> feed(std::vector<float> inputs);
@@ -90,13 +64,21 @@ namespace snn
             void randWeights();
             void setLinks(std::vector<Link>);
             std::vector<Link> getLinks();
-            void link();
 
-            std::vector<Layer>* accessLayers();
+            void link(std::string idA, std::string idB);
+            void unlink(std::string idA, std::string idB);
+            void add(unsigned int type);
+            void remove(std:string id);
 
         private:
 
-            std::vector<Layer> m_layers;
+            std::map<std::string,Neuron> m_neurons;
+
+            std::vector<Neuron*> m_inputs;
+            std::vector<Neuron*> m_hiddens;
+            std::vector<Neuron*> m_outputs;
+            std::vector<Neuron*> m_bias;
+
             std::vector<Link> m_links;
 
             std::function<float(float)> m_hidFun = snn::FUN_SIGMOID;

@@ -3,6 +3,8 @@
 #include <vector>
 #include "ffnet.hpp"
 
+//TODO: TrainingManager.cpp
+
 namespace snn
 {
 
