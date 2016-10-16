@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "ffnet.hpp"
+#include "net.hpp"
 
 //TODO: TrainingManager.cpp
 
@@ -25,13 +25,13 @@ namespace snn
             std::vector<float> m_outputs;
     };
 
-    class TrainingManager
+    class Trainer
     {
         public:
-            TrainingManager(unsigned int method);
-            ~TrainingManager();
+            Trainer(unsigned int method);
+            ~Trainer();
 
-            void train(snn::FFNet *net, std::vector<Dataset> ds);
+            void train(snn::Net *net, std::vector<Dataset> ds);
 
         private:
             std::vector<Dataset> m_dss;

@@ -1,4 +1,4 @@
 #pragma once
 
-#include "ffnet.hpp"
-#include "TrainingManager.hpp"
+#include "net.hpp"
+#include "Trainer.hpp"

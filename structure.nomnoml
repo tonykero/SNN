@@ -1,42 +1,35 @@
 [SNN|
 
+[Layer|
+m_neurons|
+Layer(unsigned int, unsigned int)
+]
+
 [Net|
-Links: array;
-Layers: array|
+m_neurons
+m_links|
+Net(std::vector<Neuron>, std::vector<Link>
 feed()
-setHiddenFunction()
 setOutputFunction()
 randWeights()
-setWeights()
-getWeights()
-accessLayers()
+setLinks()
+getLinks()
+getSize()
 ]
 
-[Layers|
-Neurons: array
-type: unsigned int
-id: unsigned int|
-feed()
-setActivationFunction()
-accessNeurons()
+[SOM|
+SOM(unsigned int, unsigned int)
+]
+
+[FFNN|
+m_layers|
+FFNN(vector<Layer>)
 ]
 
 
-[Neuron|
-parent: Layer*
-value: float
-type: unsigned int
-id: unsigned int
-cacheValue: float|
-compute()
-store()
-]
 
-[Link|
-a: Neuron*
-b: Neuron*
-weight: float
-]
+[Net]-->[SOM]
+[Net]-->[FFNN]
 
 
 ]

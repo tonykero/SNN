@@ -4,6 +4,7 @@
 
 namespace snn
 {
+    /*Activations Functions*/
     inline float FUN_LINEAR(float fout)
     {
         return fout;
@@ -21,6 +22,14 @@ namespace snn
 
     inline float FUN_TANH(float fout);
     {
-        return tanh(fout);
+        //or just tanh(fout)
+        float e = exp(2*fout);
+        return (e-1)/(e+1);
+    }
+
+    inline float FUN_RELU(float fout)
+    {
+        //or just max(0, fout); but this formula rocks
+        return (abs(fout)+fout)/2; 
     }
 }

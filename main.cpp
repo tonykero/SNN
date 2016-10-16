@@ -9,11 +9,13 @@
 int main()
 {
 
-    snn::FFNet net("");
+    /*outdated thoughts*/
+    
+    //snn::Net net();
 
-    snn::TrainingMan trainM(snn::BACKPROP);
+    snn::Trainer tr(snn::BACKPROP);
 
-    trainM.train(&net, 
+    tr.train(&net, 
                     {
                         snn::Dataset({0,0},{0}),
                         snn::Dataset({0, 1},{1}),

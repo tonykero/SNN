@@ -1,12 +1,8 @@
-FFNet:
-    -constructor
-    -feed()
-    -randWeights()
-    -link()
-    -unlink
-    -add
-    -remove
+Net:
 
-Neuron:
-    -compute()
-    -store()
+    -randWeights()
+
+Heritance:
+    FFNN
+    SOM
+    CNN
