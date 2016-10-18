@@ -1,5 +1,5 @@
 .vscode/
 misc/
+vs/
 
-vs/*
 *.txt

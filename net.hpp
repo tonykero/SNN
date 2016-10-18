@@ -21,10 +21,13 @@ namespace snn
         
     };
 
+	struct Neuron;
+	class Net;
+
     struct Link
     {
-        Neuron* a;
-        Neuron* b;
+        unsigned int a;
+        unsigned int b;
 
         float weight = 1.0f;
     };
@@ -33,10 +36,11 @@ namespace snn
     {
         Net* parent;
         float output = 0.0f;
-        unsigned int type;
-        unsigned int id;
+
+        unsigned int type; //INPUT, HIDDEN, OUTPUT, BIAS
+		unsigned int id; //unique identifier
         
-        void compute();
+        float compute();
 
         friend class Net;
     };
@@ -69,6 +73,8 @@ namespace snn
             unsigned int m_neuronsCount = 0;
 
             std::vector<Link> m_links;
+
+			unsigned int m_linksCount = 0;
 
             std::vector<float> m_inputs;
 
