@@ -3,7 +3,7 @@
 * 2 inputs 1 BIAS, 2 Hidden 1 Bias, 1 Output
 */
 
-#include "net.hpp"
+#include "../include/net.hpp"
 #include <iostream>
 
 int main()
