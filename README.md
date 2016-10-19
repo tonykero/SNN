@@ -8,10 +8,16 @@ Aiming to be intuitive, fast & complete.
     This library is still in development
     However the core of the library works.
 
+    Core Features:
+
     - [x] Net 
     - [x] Activations Functions
     - [x] Layer/Neuron/Link
     - [x] FFNet
+    - [ ] Backpropagation
+    - [ ] SOM
+    - [ ] Convolutional
+    - [ ] Recurrent
 
 ## Planned implementations:
 
