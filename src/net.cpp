@@ -20,6 +20,29 @@
 #include <iostream>
 
 using namespace snn;
+/*****************************Layer***************************/
+Layer::Layer(unsigned int neuronsCount, unsigned int neuronsType, unsigned int biasCount)
+{
+    for(unsigned int i = 0; i < neuronsCount; i++)
+    {
+        Neuron n;
+        n.type = neuronsType;
+		std::cout << "NEURON CREATED TYPE:\t" << n.type << std::endl;
+        neurons.push_back(n);
+    }
+
+
+    if(biasCount > 0)
+        for(unsigned int i = 0; i < biasCount; i++)
+        {
+            Neuron n;
+            n.type = NType::BIAS;
+            n.output = 1.0f;
+            neurons.push_back(n);
+        }
+    
+    type = neuronsType;
+}
 /*****************************Neuron**************************/
 float Neuron::compute()
 {
@@ -44,6 +67,10 @@ float Neuron::compute()
 }
 
 /*******************************Net***************************/
+Net::Net()
+{
+
+}
 
 Net::Net(std::vector<Neuron> neurons, std::vector<Link> links)
 {
@@ -87,7 +114,7 @@ std::vector<float> Net::feed(std::vector<float> inputs)
         }
         else //if actualneuron == link.a
         {
-            m_neurons[idB].output += m_neurons[idA].output*weight;//no need to recompute
+            m_neurons[idB].output += m_neurons[idA].output*weight;//we must not recompute the same neuron
         }
         actualID = m_neurons[idA].id;
     }

@@ -44,7 +44,7 @@ int main()
 	O1.id = 6;
 	/*****/
 
-	//store neurons in vector and assign pointer in links with them
+	//store neurons in vector
 	neurons.push_back(I1);//0
 	neurons.push_back(I2);//1
 	neurons.push_back(B1);//2

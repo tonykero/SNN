@@ -33,12 +33,18 @@ namespace snn
         HIDDEN,
         OUTPUT,
         BIAS,
-        CONTEXT
         
     };
 
 	struct Neuron;
 	class Net;
+
+    struct Layer
+    {
+        Layer(unsigned int neuronsCount, unsigned int neuronsType, unsigned int biasCount = 0);
+        std::vector<Neuron> neurons;//neurons initialized without id
+        unsigned int type;
+    };
 
     struct Link
     {
@@ -50,23 +56,21 @@ namespace snn
 
     struct Neuron
     {
-        Net* parent;
+        Net* parent;									  //defined in Net(...)
         float output = 0.0f;
 
-        unsigned int type; //INPUT, HIDDEN, OUTPUT, BIAS
-		unsigned int id; //unique identifier
+        unsigned int type; //INPUT, HIDDEN, OUTPUT, BIAS	
+		unsigned int id; //unique identifier				defined in Net(...)
         
         float compute();
-
-        friend class Net;
     };
 
     class Net
     {
         public:
-            Net(std::vector<Neuron> neurons, std::vector<Link> links);
+			Net(std::vector<Neuron> neurons, std::vector<Link> links);
 
-            ~Net();
+            virtual ~Net();
 
             std::vector<float> feed(std::vector<float> inputs);
 
@@ -84,6 +88,14 @@ namespace snn
 
         private:
 
+            std::vector<float> m_inputs;
+
+            std::function<float(float)> m_outFun = snn::FUN_SIGMOID;
+            std::function<float(float)> m_hidFun = snn::FUN_SIGMOID;
+        
+        protected:
+			Net();
+
             std::vector<Neuron> m_neurons;
 
             unsigned int m_neuronsCount = 0;
@@ -91,13 +103,8 @@ namespace snn
             std::vector<Link> m_links;
 
 			unsigned int m_linksCount = 0;
-
-            std::vector<float> m_inputs;
-
-            std::function<float(float)> m_outFun = snn::FUN_SIGMOID;
-            std::function<float(float)> m_hidFun = snn::FUN_SIGMOID;
-
-            friend struct Neuron;
+        
+        friend struct Neuron;
     };
 
 }
