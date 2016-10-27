@@ -23,24 +23,9 @@ using namespace snn;
 FFNet::FFNet(std::vector<Layer> layers)
 {
     m_layersCount = layers.size();
+	m_layers = layers;
 
-    std::vector<Neuron> neurons;
-
-    unsigned int id = 0;
-
-    //Store all neurons from layers to vector
-    //for each layer, push all the neurons to vector
-    for(unsigned int i = 0; i < m_layersCount; i++)//for each layer
-    {
-        for(unsigned int j = 0; j < layers[i].neurons.size(); j++)
-        {
-			
-            layers[i].neurons[j].id = id;
-			layers[i].neurons[j].parent = this;
-            neurons.push_back(layers[i].neurons[j]);
-            id++;
-        }
-    }
+    std::vector<Neuron> neurons = layers2vector();
 
     std::vector<Link> links;
 
@@ -49,25 +34,19 @@ FFNet::FFNet(std::vector<Layer> layers)
     //if not bias
     for(unsigned int i = 0; i < m_layersCount-1; i++)//for each layer (except output)
     {
-		//std::cout << "layersCount:\t" << m_layersCount << std::endl;
-        
+		
 		for(unsigned int j = 0; j < layers[i].neurons.size(); j++)//for each neurons
         {
-			//std::cout << "layer size:\t" << layers[i].neurons.size() << std::endl;
-            
+			
 			for(unsigned int k = 0; k < layers[i+1].neurons.size(); k++)//for each neuron of the next layer
             {
-				//std::cout << "next layer size:\t" << layers[i + 1].neurons.size() << std::endl;
-                
-				if(layers[i+1].neurons[k].type != NType::BIAS)
+				              
+				if(m_layers[i+1].neurons[k].type != NType::BIAS)
                 {
                     Link l;
-                    l.a = layers[i].neurons[j].id;
-                    l.b = layers[i+1].neurons[k].id;
+                    l.a = m_layers[i].neurons[j].id;
+                    l.b = m_layers[i+1].neurons[k].id;
                     links.push_back(l);
-					std::cout << "link done" << std::endl;
-					std::cout << "a:\t" << l.a << "\nb:\t" << l.b << std::endl;
-					std::cout << "i:\t" << i << std:: endl;
                 }
             }
         }
@@ -84,4 +63,30 @@ FFNet::~FFNet()
 
 }
 
+std::vector<Layer> FFNet::getLayers()
+{
+    return m_layers;
+}
 
+std::vector<Neuron> FFNet::layers2vector()
+{
+    std::vector<Neuron> neurons;
+    unsigned int id = 0;
+
+    //Store all neurons from layers to vector
+    //for each layer, push all the neurons to vector
+    for(unsigned int i = 0; i < m_layersCount; i++)//for each layer
+    {
+
+        for(unsigned int j = 0; j < m_layers[i].neurons.size(); j++)
+        {
+			
+            m_layers[i].neurons[j].id = id;
+			m_layers[i].neurons[j].parent = this;
+            neurons.push_back(m_layers[i].neurons[j]);
+            id++;
+        }
+    }
+
+    return neurons;
+}

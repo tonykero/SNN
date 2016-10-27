@@ -1,4 +1,3 @@
-#pragma once
 /*********************************************************************
 *Copyright (C) 2016  Antoine Karcher				                 *
 *								                                     *
@@ -16,5 +15,8 @@
 *along with this program. If not, see <http://www.gnu.org/licenses/>.*
 *********************************************************************/
 
-#include "net.hpp"
-#include "Trainer.hpp"
+#pragma once
+
+#include "util.hpp"     //contains functions
+#include "ffnet.hpp"    //contains ffnet & net
+#include "BackProp.hpp" //contains BackProp & Trainer

@@ -1,5 +1,7 @@
 .vscode/
 misc/
 vs/
+bin/
+src/gcov/
 
 *.txt

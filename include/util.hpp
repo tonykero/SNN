@@ -1,4 +1,3 @@
-#pragma once
 /*********************************************************************
 *Copyright (C) 2016  Antoine Karcher				                 *
 *								                                     *
@@ -16,6 +15,8 @@
 *along with this program. If not, see <http://www.gnu.org/licenses/>.*
 *********************************************************************/
 
+#pragma once
+
 #include <cmath>
 
 namespace snn
@@ -28,7 +29,7 @@ namespace snn
 
     inline float FUN_STEP(float fout)
     {
-        return (float)(fout > 0 ? 1 : 0);
+        return (fout >= 0.0f ? 1.0f : 0.0f);
     }
 
     inline float FUN_SIGMOID(float fout)
@@ -47,5 +48,26 @@ namespace snn
     {
         //or just max(0, fout); but this formula rocks
         return (abs(fout)+fout)/2; 
+    }
+
+    /*Derivatives*/
+    inline float DER_SIGMOID(float fout)
+    {
+        float sgd = FUN_SIGMOID(fout);
+        return (sgd*(1-sgd));
+    }
+
+    inline float DER_TANH(float fout)
+    {
+        float tanh = FUN_TANH(fout);
+        return 1-(tanh*tanh);
+    }
+
+    inline float DER_RELU(float fout)
+    {
+        float out = 0.0f;
+        if(fout != 0.0f)
+            out =  (abs(fout)+fout)/(2*fout);
+        return out;
     }
 }

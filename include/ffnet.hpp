@@ -1,4 +1,3 @@
-#pragma once
 /*********************************************************************
 *Copyright (C) 2016  Antoine Karcher				                 *
 *								                                     *
@@ -16,6 +15,8 @@
 *along with this program. If not, see <http://www.gnu.org/licenses/>.*
 *********************************************************************/
 
+#pragma once
+
 #include "net.hpp"
 
 namespace snn
@@ -27,8 +28,13 @@ namespace snn
             
             ~FFNet();
 
+            std::vector<Layer> getLayers();
+
         private:
             std::vector<Layer> m_layers;
             unsigned int m_layersCount = 0;
+
+            std::vector<Neuron> layers2vector();
+
     };
 }

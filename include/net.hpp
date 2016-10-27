@@ -1,4 +1,3 @@
-#pragma once
 /*********************************************************************
 *Copyright (C) 2016  Antoine Karcher				                 *
 *								                                     *
@@ -15,6 +14,8 @@
 *You should have received a copy of the GNU General Public License   *
 *along with this program. If not, see <http://www.gnu.org/licenses/>.*
 *********************************************************************/
+
+#pragma once
 
 #include <vector>
 #include <functional>
@@ -52,17 +53,34 @@ namespace snn
         unsigned int b;
 
         float weight = 1.0f;
+
+        private:
+            float previousChange = 0.0f;
+        
+        friend class BackProp;
     };
 
     struct Neuron
     {
         Net* parent;									  //defined in Net(...)
+        
         float output = 0.0f;
-
+        float sum = 0.0f;
+        
         unsigned int type; //INPUT, HIDDEN, OUTPUT, BIAS	
 		unsigned int id; //unique identifier				defined in Net(...)
-        
+
         float compute();
+
+        private:
+
+			//BackProp training
+            float delta = 0.0f;
+			bool isDeltaComputed = false;
+
+        friend class BackProp;
+		friend class Net;
+        
     };
 
     class Net
@@ -80,11 +98,15 @@ namespace snn
             std::function<float(float)> getOutputFunction();
             std::function<float(float)> getHiddenFunction();
 
+            //TODO: setters & getter for derivatives
+
             unsigned int getSize();
 
             void randWeights();
             void setLinks(std::vector<Link>);
             std::vector<Link> getLinks();
+
+            std::vector<Neuron> getNeurons();
 
         private:
 
@@ -92,6 +114,11 @@ namespace snn
 
             std::function<float(float)> m_outFun = snn::FUN_SIGMOID;
             std::function<float(float)> m_hidFun = snn::FUN_SIGMOID;
+
+            std::function<float(float)> m_hidFun_derivative = DER_SIGMOID;
+			std::function<float(float)> m_outFun_derivative = DER_SIGMOID;
+
+            void computeDeltas(std::vector<float> expectedOutputs, std::vector<float> observedOutputs);
         
         protected:
 			Net();
@@ -103,8 +130,9 @@ namespace snn
             std::vector<Link> m_links;
 
 			unsigned int m_linksCount = 0;
-        
+
         friend struct Neuron;
+        friend class BackProp;
     };
 
 }

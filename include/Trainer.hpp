@@ -1,4 +1,3 @@
-#pragma once
 /*********************************************************************
 *Copyright (C) 2016  Antoine Karcher				                 *
 *								                                     *
@@ -16,40 +15,32 @@
 *along with this program. If not, see <http://www.gnu.org/licenses/>.*
 *********************************************************************/
 
+#pragma once
+
 #include <vector>
 #include "net.hpp"
-
-//TODO: TrainingManager.cpp
 
 namespace snn
 {
 
-    enum trainMethods: unsigned int
+    struct Dataset
     {
-        BACKPROP = 1,
-        GENETIC
-    };
+        Dataset(std::vector<float> in, std::vector<float> out);
 
-    class Dataset
-    {
-        public:
-            Dataset(std::vector<float> inputs, std::vector<float> outputs);
-            ~Dataset();
-
-        private:
-            std::vector<float> m_inputs;
-            std::vector<float> m_outputs;
+        
+        std::vector<float> inputs;
+        std::vector<float> outputs;
     };
 
     class Trainer
     {
         public:
-            Trainer(unsigned int method);
-            ~Trainer();
+            Trainer(Net *net);
+            virtual ~Trainer() = 0;
 
-            void train(snn::Net *net, std::vector<Dataset> ds);
-
+        protected:
+            Net *m_pnet;
         private:
-            std::vector<Dataset> m_dss;
+
     };
 }

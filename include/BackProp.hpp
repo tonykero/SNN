@@ -15,24 +15,23 @@
 *along with this program. If not, see <http://www.gnu.org/licenses/>.*
 *********************************************************************/
 
-#include "../include/Trainer.hpp"
+#pragma once
 
-using namespace snn;
+#include "util.hpp"
+#include "ffnet.hpp"
+#include "Trainer.hpp"
 
-/***************************Dataset***************************/
-Dataset::Dataset(std::vector<float> in, std::vector<float> out)
+namespace snn
 {
-    inputs = in;
-    outputs = out;
-}
+	class BackProp
+	{
+		public:
+			BackProp(FFNet* net, std::function<float(float)> hidFun_derivative, std::function<float(float)> outFun_derivative);
+			~BackProp();
 
-/***************************Trainer***************************/
-Trainer::Trainer(Net *net)
-{
-    m_pnet = net;
-}
+			void train(std::vector<Dataset> ds, float learningRate, float momentum, unsigned int maxIterations);
 
-Trainer::~Trainer()
-{
-    delete m_pnet;
+		private:
+			FFNet* m_pnet;
+	};
 }
