@@ -23,12 +23,15 @@ namespace snn
     class FFNet : public Net
     {
         public:
-            FFNet(std::vector<Layer> layers);
+            FFNet(std::vector<Layer> _layers);
             
             ~FFNet();
 
         private:
-            std::vector<Layer> m_layers;
-            unsigned int m_layersCount = 0;
+            std::vector<Layer> layers_m;
+            unsigned int layersCount_m = 0;
+
+			std::vector<Link> link();
+			std::vector<Neuron> layers2neurons();
     };
 }

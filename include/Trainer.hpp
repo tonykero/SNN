@@ -19,8 +19,6 @@
 #include <vector>
 #include "net.hpp"
 
-//TODO: TrainingManager.cpp
-
 namespace snn
 {
 

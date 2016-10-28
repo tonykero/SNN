@@ -12,8 +12,9 @@ int main()
 	};
 	
 	snn::FFNet net(layers);
+	net.randWeights(-1, 1);
 
-	std::cout << net.feed({ 1, 0 })[0];
+	std::cout << net.feed({ 1.0f, 0.0f })[0];
 
 	return 0;
 }

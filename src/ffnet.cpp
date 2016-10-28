@@ -16,67 +16,22 @@
 *********************************************************************/
 
 #include "../include/ffnet.hpp"
-#include <iostream>
 
 using namespace snn;
 
-FFNet::FFNet(std::vector<Layer> layers)
+FFNet::FFNet(std::vector<Layer> _layers)
 {
-    m_layersCount = layers.size();
+    layersCount_m = _layers.size();
+	layers_m = _layers;
 
-    std::vector<Neuron> neurons;
+    std::vector<Neuron> neurons = layers2neurons();
 
-    unsigned int id = 0;
+    std::vector<Link> links = link();
 
-    //Store all neurons from layers to vector
-    //for each layer, push all the neurons to vector
-    for(unsigned int i = 0; i < m_layersCount; i++)//for each layer
-    {
-        for(unsigned int j = 0; j < layers[i].neurons.size(); j++)
-        {
-			
-            layers[i].neurons[j].id = id;
-			layers[i].neurons[j].parent = this;
-            neurons.push_back(layers[i].neurons[j]);
-            id++;
-        }
-    }
-
-    std::vector<Link> links;
-
-    //create links, fully connected
-    //for each neuron of a layer, connect them to all neurons of the next layer
-    //if not bias
-    for(unsigned int i = 0; i < m_layersCount-1; i++)//for each layer (except output)
-    {
-		//std::cout << "layersCount:\t" << m_layersCount << std::endl;
-        
-		for(unsigned int j = 0; j < layers[i].neurons.size(); j++)//for each neurons
-        {
-			//std::cout << "layer size:\t" << layers[i].neurons.size() << std::endl;
-            
-			for(unsigned int k = 0; k < layers[i+1].neurons.size(); k++)//for each neuron of the next layer
-            {
-				//std::cout << "next layer size:\t" << layers[i + 1].neurons.size() << std::endl;
-                
-				if(layers[i+1].neurons[k].type != NType::BIAS)
-                {
-                    Link l;
-                    l.a = layers[i].neurons[j].id;
-                    l.b = layers[i+1].neurons[k].id;
-                    links.push_back(l);
-					std::cout << "link done" << std::endl;
-					std::cout << "a:\t" << l.a << "\nb:\t" << l.b << std::endl;
-					std::cout << "i:\t" << i << std:: endl;
-                }
-            }
-        }
-    }
-
-	m_neuronsCount = neurons.size();
-	m_linksCount = links.size();
-	m_neurons = neurons;
-	m_links = links;
+	neuronsCount_m = neurons.size();
+	linksCount_m = links.size();
+	neurons_m = neurons;
+	links_m = links;
 }
 
 FFNet::~FFNet()
@@ -84,4 +39,56 @@ FFNet::~FFNet()
 
 }
 
+std::vector<Neuron> FFNet::layers2neurons()
+{
+	std::vector<Neuron> neurons;
 
+	unsigned int id = 0;
+
+	//Store all neurons from layers to vector
+	//for each layer, push all the neurons to vector
+	for (unsigned int i = 0; i < layers_m.size(); i++)//for each layer
+	{
+		for (unsigned int j = 0; j < layers_m[i].neurons.size(); j++)
+		{
+
+			layers_m[i].neurons[j].id = id;
+			layers_m[i].neurons[j].parent = this;
+			neurons.push_back(layers_m[i].neurons[j]);
+			id++;
+		}
+	}
+
+	return neurons;
+}
+
+std::vector<Link> FFNet::link()
+{
+
+	std::vector<Link> links;
+
+	//create links, fully connected
+	//for each neuron of a layer, connect them to all neurons of the next layer
+	//if not bias
+	for (unsigned int i = 0; i < layers_m.size() - 1; i++)//for each layer (except output)
+	{
+
+		for (unsigned int j = 0; j < layers_m[i].neurons.size(); j++)//for each neurons
+		{
+
+			for (unsigned int k = 0; k < layers_m[i + 1].neurons.size(); k++)//for each neuron of the next layer
+			{
+
+				if (layers_m[i + 1].neurons[k].type != NType::BIAS)
+				{
+					Link l;
+					l.a = layers_m[i].neurons[j].id;
+					l.b = layers_m[i + 1].neurons[k].id;
+					links.push_back(l);
+				}
+			}
+		}
+	}
+
+	return links;
+}

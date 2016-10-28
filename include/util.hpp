@@ -20,32 +20,37 @@
 
 namespace snn
 {
-    /*Activations Functions*/
-    inline float FUN_LINEAR(float fout)
+    namespace util
+    {
+        /*Activations Functions*/
+    inline float linear(float fout)
     {
         return fout;
     }
 
-    inline float FUN_STEP(float fout)
+    inline float step(float fout)
     {
-        return (float)(fout > 0 ? 1 : 0);
+        return (fout > 0.0f ? 1.0f : 0.0f);
     }
 
-    inline float FUN_SIGMOID(float fout)
+    inline float sigmoid(float fout)
     {
-        return (1/(1+exp(-fout)));
+        return (1.0f/(1.0f+exp(-fout)));
     }
 
-    inline float FUN_TANH(float fout)
+    inline float tanh(float fout)
     {
         //or just tanh(fout)
-        float e = exp(2*fout);
-        return (e-1)/(e+1);
+        float e = exp(2.0f*fout);
+        return (e-1.0f)/(e+1.0f);
     }
 
-    inline float FUN_RELU(float fout)
+    inline float relu(float fout)
     {
         //or just max(0, fout); but this formula rocks
-        return (abs(fout)+fout)/2; 
+        return (abs(fout)+fout)/2.0f; 
     }
+
+    }
+    
 }
