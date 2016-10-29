@@ -63,7 +63,7 @@ namespace snn
         unsigned int type; //INPUT, HIDDEN, OUTPUT, BIAS	
 		unsigned int id; //unique identifier				defined in Net(...)
         
-        float compute();
+        float compute(std::vector<float> _inputs);
     };
 
     class Net

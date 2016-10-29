@@ -1,4 +1,3 @@
-#pragma once
 /*********************************************************************
 *Copyright (C) 2016  Antoine Karcher				                 *
 *								                                     *
@@ -16,38 +15,31 @@
 *along with this program. If not, see <http://www.gnu.org/licenses/>.*
 *********************************************************************/
 
-#include <vector>
-#include "net.hpp"
+#pragma once
 
+#include "net.hpp"
 namespace snn
 {
-
-    enum trainMethods: unsigned int
-    {
-        BACKPROP = 1,
-        GENETIC
-    };
-
-    class Dataset
+    class GeneticTrainer
     {
         public:
-            Dataset(std::vector<float> inputs, std::vector<float> outputs);
-            ~Dataset();
+            GeneticTrainer(unsigned int _populationPerGen, float _mutationRate, float _crossoverRate, unsigned int _eliteCopies);
+            ~GeneticTrainer();
 
+            void run(Net* _net, unsigned int _generations, std::function<float(Net)> _fitnessFunction);
+            
+        
         private:
-            std::vector<float> m_inputs;
-            std::vector<float> m_outputs;
-    };
+            unsigned int populationPerGen_m;
+            float mutationRate_m;
+            float crossoverRate_m;
+            unsigned int eliteCopies_m;
 
-    class Trainer
-    {
-        public:
-            Trainer(unsigned int method);
-            ~Trainer();
+            std::vector<float> fitnesses_m;
+            std::vector< std::vector<Link> > population_m;//Vector of Vector of Weights
+            std::vector<Link> model_m;
 
-            void train(snn::Net *net, std::vector<Dataset> ds);
 
-        private:
-            std::vector<Dataset> m_dss;
-    };
+			std::vector<Link> randomWeights();
+	};
 }

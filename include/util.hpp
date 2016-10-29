@@ -17,6 +17,7 @@
 *********************************************************************/
 
 #include <cmath>
+#include <vector>
 
 namespace snn
 {
@@ -48,9 +49,24 @@ namespace snn
     inline float relu(float fout)
     {
         //or just max(0, fout); but this formula rocks
-        return (abs(fout)+fout)/2.0f; 
+        return (std::abs(fout)+fout)/2.0f; 
     }
 
     }
+
+    class Dataset
+    {
+        public:
+            Dataset(std::vector<float> _inputs, std::vector<float> _outputs)
+            {
+                inputs = _inputs;
+                outputs = _outputs;
+            }
+
+            ~Dataset() {};
+
+            std::vector<float> inputs;
+            std::vector<float> outputs;
+    };
     
 }
