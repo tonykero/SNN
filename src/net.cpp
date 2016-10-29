@@ -42,12 +42,12 @@ Layer::Layer(unsigned int _neuronsCount, unsigned int _neuronsType, unsigned int
     type = _neuronsType;
 }
 /*****************************Neuron**************************/
-float Neuron::compute()
+float Neuron::compute(std::vector<float> _inputs)
 {
     switch(type)
     {
         case NType::INPUT:
-            output = parent->inputs_m[id];
+            output = _inputs[id];
             break;
         case NType::HIDDEN:
             output = parent->hidFun_m(sum);
@@ -107,7 +107,7 @@ std::vector<float> Net::feed(std::vector<float> _inputs)
 
         if(actualID != neurons_m[idA].id)//if actualneuron != link.a
         {
-			neurons_m[idB].sum += neurons_m[idA].compute()*weight;
+			neurons_m[idB].sum += neurons_m[idA].compute(_inputs)*weight;
         }
         else //if actualneuron == link.a
         {
@@ -122,8 +122,14 @@ std::vector<float> Net::feed(std::vector<float> _inputs)
     {
         if(neurons_m[i].type == NType::OUTPUT)
         {
-            outputs.push_back(outFun_m(neurons_m[i].sum));
+            neurons_m[i].output = outFun_m(neurons_m[i].sum);
+            outputs.push_back( neurons_m[i].output );
         }
+    }
+
+    for(unsigned int i = 0; i < neurons_m.size(); i++)
+    {
+        neurons_m[i].sum = 0.0f;
     }
 
     return outputs;

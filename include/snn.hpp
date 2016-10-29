@@ -16,5 +16,7 @@
 *along with this program. If not, see <http://www.gnu.org/licenses/>.*
 *********************************************************************/
 
+#include "util.hpp"
+#include "net.hpp"
 #include "ffnet.hpp"
-#include "Trainer.hpp"
+#include "GeneticTrainer.hpp"
