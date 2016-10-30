@@ -75,6 +75,9 @@ namespace snn
 
             std::vector<float> feed(std::vector<float> _inputs);
 
+			float computeMSE(std::vector<float> _inputs, std::vector<float> _outputs);
+			float computeGlobalMSE(std::vector<Dataset> _ds);
+
             void setOutputFunction(std::function<float(float)> _actFun);
             void setHiddenFunction(std::function<float(float)> _actFun);
 

@@ -3,18 +3,18 @@
 #include <iostream>
 #include <chrono>
 
+std::vector<snn::Dataset> xor_ds = 
+{
+	snn::Dataset( {0.0f, 0.0f}, { 0.0f}),
+	snn::Dataset( {1.0f, 0.0f}, { 1.0f}),
+	snn::Dataset( {0.0f, 1.0f}, { 1.0f}),
+	snn::Dataset( {1.0f, 1.0f}, { 0.0f}),
+};
+
 float evaluate(snn::Net net)
 {
 	float totalError = 0.0f;
 
-	std::vector<snn::Dataset> xor_ds = 
-	{
-		snn::Dataset( {0.0f, 0.0f}, { 0.0f}),
-		snn::Dataset( {1.0f, 0.0f}, { 1.0f}),
-		snn::Dataset( {0.0f, 1.0f}, { 1.0f}),
-		snn::Dataset( {1.0f, 1.0f}, { 0.0f}),
-	};
-	
 	float output;
 
 	for (unsigned int i = 0; i < 4; i++)
@@ -53,10 +53,11 @@ int main()
 	gt.run(&net, 300, evaluate);
 
 	std::cout << "----------Simple XOR Test----------\n";
-	std::cout << "[0.0f, 0.0f] outputs [" << net.feed({ 0.0f, 0.0f })[0] << "]\n";
-	std::cout << "[1.0f, 0.0f] outputs [" << net.feed({ 1.0f, 0.0f })[0] << "]\n";
-	std::cout << "[0.0f, 1.0f] outputs [" << net.feed({ 0.0f, 1.0f })[0] << "]\n";
-	std::cout << "[1.0f, 1.0f] outputs [" << net.feed({ 1.0f, 1.0f })[0] << "]\n";
+	std::cout << "[0.0f, 0.0f] outputs [" << net.feed(xor_ds[0].inputs)[0] << "]\n";
+	std::cout << "[1.0f, 0.0f] outputs [" << net.feed(xor_ds[1].inputs)[0] << "]\n";
+	std::cout << "[0.0f, 1.0f] outputs [" << net.feed(xor_ds[2].inputs)[0] << "]\n";
+	std::cout << "[1.0f, 1.0f] outputs [" << net.feed(xor_ds[3].inputs)[0] << "]\n";
+	std::cout << "Global MSE (average): " << net.computeGlobalMSE(xor_ds) << "\n";
 	std::cout << "Done (" << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start).count()  << " ms)" << std::endl;
 	return 0;
 }

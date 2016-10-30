@@ -136,6 +136,30 @@ std::vector<float> Net::feed(std::vector<float> _inputs)
 
 }
 
+float Net::computeMSE(std::vector<float> _inputs, std::vector<float> _outputs)
+{
+	std::vector<float> outputs = this->feed(_inputs);
+
+	float error = 0.0f;
+	for (unsigned int i = 0; i < outputs.size(); i++)
+	{
+		error += pow(_outputs[i] - outputs[i], 2);
+	}
+
+	return error / outputs.size();
+}
+
+float Net::computeGlobalMSE(std::vector<Dataset> _ds)
+{
+	float error = 0.0f;
+	for (unsigned int i = 0; i < _ds.size(); i++)
+	{
+		error += computeMSE(_ds[i].inputs, _ds[i].outputs);
+	}
+
+	return error / _ds.size();
+}
+
 void Net::setOutputFunction(std::function<float(float)> _actFun)
 {
     outFun_m = _actFun;
