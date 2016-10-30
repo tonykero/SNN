@@ -16,12 +16,19 @@
 *********************************************************************/
 
 #include "../include/net.hpp"
+
 #include <random>
+
 
 using namespace snn;
 /*****************************Layer***************************/
 Layer::Layer(unsigned int _neuronsCount, unsigned int _neuronsType, unsigned int _biasCount)
 {
+    #ifdef DEBUG
+    //checks if _neuronsType is valid type
+    assert( ( _neuronsType >=1 && _neuronsType <= 4 ) );
+    #endif
+
     for(unsigned int i = 0; i < _neuronsCount; i++)
     {
         Neuron n;
@@ -72,6 +79,36 @@ Net::Net()
 
 Net::Net(std::vector<Neuron> _neurons, std::vector<Link> _links)
 {
+    #ifdef DEBUG
+    //checks if there is at least an input & output neuron 
+    bool foundInput = false;
+    bool foundOutput = false;
+    for(unsigned int i = 0; i < _neurons.size(); i++)
+    {
+        if(_neurons[i].type == NType::INPUT)
+            foundInput = true;
+        if(_neurons[i].type == NType::OUTPUT)
+            foundOutput = true;
+
+        if(foundInput && foundOutput)
+            break;
+    }
+    assert( foundInput && foundOutput );
+
+    //checks if IDs in links are in the range of IDs neurons 
+    unsigned int highestID = 0;
+    for(unsigned int i = 0; i < _links.size(); i++)
+    {
+        if(highestID < _links[i].a)
+            highestID = _links[i].a;
+
+        if(highestID < _links[i].b)
+            highestID = _links[i].b;
+    }
+    unsigned int highestReachableID = _neurons.size() - 1;
+    assert( highestID <= highestReachableID );
+    #endif
+
     neurons_m = _neurons;
     neuronsCount_m = _neurons.size();
 
@@ -92,6 +129,11 @@ Net::~Net()
 
 std::vector<float> Net::feed(std::vector<float> _inputs)
 {
+    #ifdef DEBUG
+    //checks if there is at least 1 input
+    assert( _inputs.size() >= 1 );
+    #endif
+    
     inputs_m = _inputs;
 
     unsigned int actualID = 1; //the first neuron can't have 1 as id
@@ -140,6 +182,14 @@ float Net::computeMSE(std::vector<float> _inputs, std::vector<float> _outputs)
 {
 	std::vector<float> outputs = this->feed(_inputs);
 
+    #ifdef DEBUG
+    //checks if the number of outputs is the same
+    assert( outputs.size() == _outputs.size() );
+    //check if the size is not equal to 0
+    //for return calculation
+    assert( outputs.size() != 0 );
+    #endif
+
 	float error = 0.0f;
 	for (unsigned int i = 0; i < outputs.size(); i++)
 	{
@@ -151,6 +201,12 @@ float Net::computeMSE(std::vector<float> _inputs, std::vector<float> _outputs)
 
 float Net::computeGlobalMSE(std::vector<Dataset> _ds)
 {
+    #ifdef DEBUG
+    //check if the size is not equal to 0
+    //for return calculation
+    assert( _ds.size() != 0 );
+    #endif
+
 	float error = 0.0f;
 	for (unsigned int i = 0; i < _ds.size(); i++)
 	{
