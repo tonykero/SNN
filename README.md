@@ -21,11 +21,15 @@ However some core features work.
 
 ## Compiling
 
-At this moment no proper compilation process is implemented.
-However you will find batch scripts in bin/ to compile examples
-under Windows with g++.
+You can use CMake to compile SNN.
+the script supports MSVC, Clang & GCC
 
-CMake build script is planned.
+3 options are defined:
+```
+BUILD_SHARED    (default: ON)
+BUILD_EXAMPLES  (default: OFF)
+DEBUG           (default: OFF)
+```
 
 ### Core Features:
 ```
