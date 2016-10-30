@@ -1,4 +1,4 @@
-#include "../include/ffnet.hpp"
+#include "../include/snn.hpp"
 
 #include <iostream>
 #include <chrono>

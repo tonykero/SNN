@@ -17,7 +17,9 @@
 
 #pragma once
 
+#include "Config.hpp"
 #include "net.hpp"
+
 namespace snn
 {
     class GeneticTrainer

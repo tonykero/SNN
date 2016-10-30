@@ -21,6 +21,12 @@ using namespace snn;
 
 FFNet::FFNet(std::vector<Layer> _layers)
 {
+	#ifdef DEBUG
+	//checks if the network has at least 2 Layers
+	assert( _layers.size() > 1 );
+	//at least an input & an output layer
+	assert( _layers[0].type == NType::INPUT && _layers.back().type == NType::OUTPUT );
+	#endif
     layersCount_m = _layers.size();
 	layers_m = _layers;
 
