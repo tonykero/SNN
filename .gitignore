@@ -2,5 +2,4 @@
 misc/
 vs/
 *.exe
-
-*.txt
+build/
