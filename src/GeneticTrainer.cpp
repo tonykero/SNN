@@ -15,13 +15,21 @@
 *along with this program. If not, see <http://www.gnu.org/licenses/>.*
 *********************************************************************/
 
-#include <random>
 #include "../include/GeneticTrainer.hpp"
+
+#include <random>
+
 
 using namespace snn;
 
 GeneticTrainer::GeneticTrainer(unsigned int _populationPerGen, float _mutationRate, float _crossoverRate, unsigned int _eliteCopies)
 {
+    #ifdef DEBUG
+    assert( _eliteCopies < _populationPerGen );
+    assert( _mutationRate >= 0.0f && _mutationRate <= 1.0f );
+    assert( _crossoverRate >= 0.0f && _crossoverRate <= 1.0f );
+    #endif
+
     populationPerGen_m = _populationPerGen;
     mutationRate_m = _mutationRate;
     crossoverRate_m = _crossoverRate;
@@ -35,6 +43,7 @@ GeneticTrainer::~GeneticTrainer()
 
 void GeneticTrainer::run(Net *_net, unsigned int _generations, std::function<float(Net)> _fitnessFunction)
 {
+    
     //generate random population 
     
     //evaluate fitnesses of the population 

@@ -17,8 +17,8 @@
 
 #pragma once
 
-#include "Config.hpp"
-#include "util.hpp"
-#include "net.hpp"
-#include "ffnet.hpp"
-#include "GeneticTrainer.hpp"
+#ifndef NDEBUG
+    #define DEBUG
+    #warning DEBUG Mode enabled, add -DNDEBUG to desactivate
+    #include <cassert>
+#endif
