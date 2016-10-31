@@ -1,7 +1,21 @@
 # **Simple Neural Networks**
 
-SNN is a lightweight C++ library which focus on artificial neural Networks,
+SNN is a lightweight C++ library which focus on Artificial Neural Networks,
 Aiming to be intuitive, fast & complete.
+
+
+## Table of Contents
+
+* Why ?
+* Status
+    * Core Features
+* Planned implementations
+* Compiling
+* Documentation
+* About
+* License
+
+---
 
 ## Why ?
 
@@ -14,22 +28,13 @@ So i decided to make my own library, for artificial neural networks,
 Actually **creating a 2 Layers-Deep FeedForward Neural Network and training it**
 **with a Genetic Algorithm using my library, is about writing 7 lines of code.**
 
+---
+
 ## Status
 
 This library is still **in development**
 However some core features work.
 
-## Compiling
-
-You can use CMake to compile SNN.
-the script supports MSVC, Clang & GCC
-
-3 options are defined:
-```
-BUILD_SHARED    (default: ON)
-BUILD_EXAMPLES  (default: OFF)
-DEBUG           (default: OFF)
-```
 
 ### Core Features:
 ```
@@ -39,11 +44,9 @@ DEBUG           (default: OFF)
 - FFNet                 (done)
 - Genetic Algorithm     (done)
 - Backpropagation
-- SOM
-- Convolutional
 - Recurrent
 ```
-
+---
 ## Planned implementations:
 
 * Neural Network Types:
@@ -62,20 +65,68 @@ DEBUG           (default: OFF)
 * Training Algorithms:
     * Backpropagation
     * Resilient Propagation
-    * Genetic Algorithm 
+    * Genetic Algorithm
 
 * Model Selection:
     * Pruning
     * Regularization & Dropout
     * Grid search (brute force)
+---
+## Compiling
+
+### Requirements
+
+- CMake 2.8
+- g++ or clang++ or msvc
+
+You can use CMake to compile SNN.
+the script supports MSVC, Clang & GCC
+
+3 options are defined:
+```
+BUILD_SHARED    (default: ON)
+BUILD_EXAMPLES  (default: OFF)
+DEBUG           (default: OFF)
+```
+
+First clone the repository:
+```
+git clone https://github.com/tonykero/SNN.git SNN
+cd SNN/build
+```
+The following command will configure the library as a RELEASE SHARED library and without examples
+and the generator choosen will be Visual Studio if under Windows, or Unix Makefiles if under Linux.
+You can change this with -G option.
+```
+cmake ..
+```
+To build the library and examples:
+```
+cmake -DBUILD_EXAMPLES=ON ..
+```
+To build the library as STATIC library:
+```
+cmake -DBUILD_SHARED=OFF ..
+```
+
+And finally run the build
+```
+cmake --build .
+```
+
+---
 
 ## Documentation
 
 Documentation is planned.
 
+---
+
 ## About
 
-SNN is developed by me :] as a french autodidact/hobbyist nerd
+SNN is developed by me :] as a french autodidact/hobbyist nerd/no-life Computer Science lover.
+
+---
 
 ## License
 
