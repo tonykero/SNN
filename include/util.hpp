@@ -18,6 +18,8 @@
 #pragma once
 
 #include "Config.hpp"
+
+#include <random>
 #include <cmath>
 #include <vector>
 
@@ -54,21 +56,11 @@ namespace snn
         return (std::abs(fout)+fout)/2.0f; 
     }
 
-    }
-
-    class Dataset
+    inline float sigmoidDerivative(float fout)
     {
-        public:
-            Dataset(std::vector<float> _inputs, std::vector<float> _outputs)
-            {
-                inputs = _inputs;
-                outputs = _outputs;
-            }
-
-            ~Dataset() {};
-
-            std::vector<float> inputs;
-            std::vector<float> outputs;
-    };
+        float sgd = sigmoid(fout);
+        return sgd*(1.0f-sgd);
+    }
     
+    }
 }

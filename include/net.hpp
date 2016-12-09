@@ -19,11 +19,10 @@
 
 #include "Config.hpp"
 #include "util.hpp"
+#include "datasets.hpp"
 
 #include <vector>
 #include <functional>
-
-
 
 
 namespace snn
@@ -39,8 +38,8 @@ namespace snn
         
     };
 
-	struct Neuron;
-	class Net;
+    struct Neuron;
+    class Net;
 
     struct Layer
     {
@@ -55,17 +54,22 @@ namespace snn
         unsigned int b;
 
         float weight = 1.0f;
+        
+        float lastUpdate = 0.0f;
     };
 
     struct Neuron
     {
         Net* parent;									  //defined in Net(...)
         
-		float output = 0.0f;
-		float sum = 0.0f;
+        float output = 0.0f;
+        float sum = 0.0f;
+
+        float delta = 0.0f;
+        bool isDeltaComputed = false;
 
         unsigned int type; //INPUT, HIDDEN, OUTPUT, BIAS	
-		unsigned int id; //unique identifier				defined in Net(...)
+        unsigned int id; //unique identifier				defined in Net(...)
         
         float compute(std::vector<float> _inputs);
     };
@@ -73,14 +77,14 @@ namespace snn
     class Net
     {
         public:
-			Net(std::vector<Neuron> _neurons, std::vector<Link> _links);
+            Net(std::vector<Neuron> _neurons, std::vector<Link> _links);
 
             virtual ~Net();
 
             std::vector<float> feed(std::vector<float> _inputs);
 
-			float computeMSE(std::vector<float> _inputs, std::vector<float> _outputs);
-			float computeGlobalMSE(std::vector<Dataset> _ds);
+            float computeMSE(std::vector<float> _inputs, std::vector<float> _outputs);
+            float computeGlobalMSE(std::vector<Dataset> _ds);
 
             void setOutputFunction(std::function<float(float)> _actFun);
             void setHiddenFunction(std::function<float(float)> _actFun);
@@ -94,17 +98,18 @@ namespace snn
             void setLinks(std::vector<Link>);
             std::vector<Link> getLinks();
 
-			std::vector<Neuron> getNeurons();
+            void setNeurons(std::vector<Neuron>);
+            std::vector<Neuron> getNeurons();
 
         private:
 
             std::vector<float> inputs_m;
 
-            std::function<float(float)> outFun_m = snn::util::sigmoid;
-            std::function<float(float)> hidFun_m = snn::util::sigmoid;
+            std::function<float(float)> outFun_m = util::sigmoid;
+            std::function<float(float)> hidFun_m = util::sigmoid;
         
         protected:
-			Net();
+            Net();
 
             std::vector<Neuron> neurons_m;
 
@@ -112,10 +117,9 @@ namespace snn
 
             std::vector<Link> links_m;
 
-			unsigned int linksCount_m = 0;
+            unsigned int linksCount_m = 0;
         
         friend struct Neuron;
     };
 
 }
-

@@ -5,7 +5,7 @@
 
 int main()
 {
-	std::cout << "-------------FFNet.exe-------------\n";
+	std::cout << "-------------FFNet-------------\n";
 	std::cout << "Basic FFNet With:\n";
 	std::cout << "L1: 2 Inputs, 1 bias\n";
 	std::cout << "L2: 2 Hiddens, 1 bias\n";
@@ -34,7 +34,7 @@ int main()
 	snn::FFNet net(layers);
 	net.randWeights(-1, 1);
 
-	std::cout << "----------Simple XOR Test----------\n";
+	std::cout << "--------Simple XOR Test--------\n";
 	std::cout << "[0.0f, 0.0f] outputs [" << net.feed( xor_ds[0].inputs )[0] << "]\n";
 	std::cout << "[1.0f, 0.0f] outputs [" << net.feed( xor_ds[1].inputs )[0] << "]\n";
 	std::cout << "[0.0f, 1.0f] outputs [" << net.feed( xor_ds[2].inputs )[0] << "]\n";

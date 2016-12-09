@@ -17,12 +17,24 @@
 
 #pragma once
 
-#ifndef NDEBUG
-    #define DEBUG
-    #ifdef _MSC_VER
-        #pragma message("DEBUG Mode enabled, add -DNDEBUG to desactivate")
-    #else
-        #warning DEBUG Mode enabled, add -DNDEBUG to desactivate
-    #endif
-    #include <cassert>
-#endif
+#include <vector>
+
+namespace snn
+{
+    
+    class Dataset
+    {
+    public:
+        Dataset(std::vector<float> _inputs, std::vector<float> _outputs)
+           {
+            inputs = _inputs;
+            outputs = _outputs;
+            }
+
+        ~Dataset() {};
+
+        std::vector<float> inputs;
+        std::vector<float> outputs;
+    };
+    
+}

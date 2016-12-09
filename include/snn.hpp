@@ -22,3 +22,4 @@
 #include "net.hpp"
 #include "ffnet.hpp"
 #include "GeneticTrainer.hpp"
+#include "BackpropTrainer.hpp"

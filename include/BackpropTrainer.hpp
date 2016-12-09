@@ -19,21 +19,38 @@
 
 #include "Config.hpp"
 #include "net.hpp"
+#include "util.hpp"
+#include "datasets.hpp"
 
 namespace snn
 {
-    class FFNet : public Net
+    enum BackpropType: unsigned int
+    {
+        ONLINE = 1,
+        BATCH
+    };
+
+    class BackpropTrainer
     {
         public:
-            FFNet(std::vector<Layer> _layers);
-            
-            ~FFNet();
 
+            BackpropTrainer(unsigned int _backpropType, float _learningRate, float _momentum);
+            ~BackpropTrainer();
+
+            void setOutputDerivative(std::function<float(float)> _actFunDerivative);
+            void setHiddenDerivative(std::function<float(float)> _actFunDerivative);
+
+            void train(Net* _net, unsigned int _epochs, std::vector<Dataset> _datasets);
+        
         private:
-            std::vector<Layer> layers_m;
-            unsigned int layersCount_m = 0;
-
-            std::vector<Link> link();
-            std::vector<Neuron> layers2neurons();
+            unsigned int backpropType_m;
+            float learningRate_m;
+            float momentum_m;
+            
+            std::function<float(float)> outputDer_m = util::sigmoidDerivative;
+            std::function<float(float)> hiddenDer_m = util::sigmoidDerivative;
+            
+            void trainOnline(Net* _net, unsigned int _epochs, std::vector<Dataset> _datasets);
+            void trainBatch(Net* _net, unsigned int _epochs, std::vector<Dataset> _datasets);
     };
 }

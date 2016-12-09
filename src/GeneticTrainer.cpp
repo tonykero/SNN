@@ -62,7 +62,7 @@ void GeneticTrainer::run(Net *_net, unsigned int _generations, std::function<flo
     //Generate initial random population
     for(unsigned int i = 0; i < populationPerGen_m; i++)
     {
-        population_m.push_back(randomWeights());
+        population_m.push_back(randomWeights(model_m));
     }
     
     std::default_random_engine generator;
@@ -70,13 +70,12 @@ void GeneticTrainer::run(Net *_net, unsigned int _generations, std::function<flo
 
     std::vector< std::vector<Link> > nextPopulation;
 
-	unsigned int eliteIndex = 0;
+    unsigned int eliteIndex = 0;
 
     for(unsigned int i = 0; i < _generations; i++)
     {
         nextPopulation.clear();
-		fitnesses_m.clear();
-
+        fitnesses_m.clear();
         //Evaluate population
         float totalFitness = 0;
         for(unsigned int j = 0; j < populationPerGen_m; j++)
@@ -87,7 +86,7 @@ void GeneticTrainer::run(Net *_net, unsigned int _generations, std::function<flo
         }
 
         //Store the best
-		eliteIndex = 0;
+        eliteIndex = 0;
         for(unsigned int j = 1; j < fitnesses_m.size(); j++)
         {
             if(fitnesses_m[j] > fitnesses_m[eliteIndex])
@@ -101,35 +100,35 @@ void GeneticTrainer::run(Net *_net, unsigned int _generations, std::function<flo
         }
 
         std::uniform_int_distribution<unsigned int> distrib(0, (unsigned int)totalFitness);
-		std::vector< std::vector<Link>> selected;
+        std::vector< std::vector<Link>> selected;
 
-		//Roulette Wheel Selection
-		//basically all candidates have the same probability of being picked
-		//TODO: choose only those which have a fitness higher than the average
-		while(nextPopulation.size() < populationPerGen_m )
+        //Roulette Wheel Selection
+        //basically all candidates have the same probability of being picked
+        //TODO: choose only those which have a fitness higher than the average
+        while(nextPopulation.size() < populationPerGen_m )
         {
 
             unsigned int randLvl1 = distrib(generator);
-			unsigned int randLvl2 = distrib(generator);
-			float sum1 = 0.0f;
-			float sum2 = 0.0f;
+            unsigned int randLvl2 = distrib(generator);
+            float sum1 = 0.0f;
+            float sum2 = 0.0f;
 
             for(unsigned int k = 0; k < fitnesses_m.size(); k++)
             {
                 if(sum1 < (float)randLvl1)
                     sum1 += fitnesses_m[k];
-				
-				if((selected.size() != 1) && (sum1 >= (float)randLvl1))
-					selected.push_back(population_m[k]);
 
-				if (sum2 < (float)randLvl2)
-					sum2 += fitnesses_m[k];
-				
-				if ( (selected.size() != 2 ) && ( sum2 >= (float)randLvl2 ) )
-					selected.push_back(population_m[k]);
-				
-				if ( (sum1 >= (float)randLvl1 && sum2 >= (float)randLvl2 ))
-					break;
+                if((selected.size() != 1) && (sum1 >= (float)randLvl1))
+                    selected.push_back(population_m[k]);
+
+                if (sum2 < (float)randLvl2)
+                    sum2 += fitnesses_m[k];
+
+                if ( (selected.size() != 2 ) && ( sum2 >= (float)randLvl2 ) )
+                    selected.push_back(population_m[k]);
+
+                if ( (sum1 >= (float)randLvl1 && sum2 >= (float)randLvl2 ))
+                    break;
             }
 
             
@@ -143,24 +142,24 @@ void GeneticTrainer::run(Net *_net, unsigned int _generations, std::function<flo
             selected.clear();
 
             std::vector<Link> offspring1 = candidate1,
-								offspring2 = candidate2;
+                                offspring2 = candidate2;
 
-			
-			for(unsigned int k = 0; k < candidate1.size(); k++)
-			{
-				//uniform crossover defined by crossoverRate
-				std::uniform_int_distribution<unsigned int> crossDistrib(0, 100);
-				if(crossDistrib(generator) < crossoverRate_m*candidate1.size() )
+
+            for(unsigned int k = 0; k < candidate1.size(); k++)
+            {
+                //uniform crossover defined by crossoverRate
+                std::uniform_int_distribution<unsigned int> crossDistrib(0, 100);
+                if(crossDistrib(generator) < crossoverRate_m*candidate1.size() )
                 {
-					offspring1[k].weight = candidate2[k].weight;
+                    offspring1[k].weight = candidate2[k].weight;
                     offspring2[k].weight = candidate1[k].weight;
-				}
+                }
 
-				
-				std::uniform_real_distribution<float> weightDistrib(-2, 2);
+
+                std::uniform_real_distribution<float> weightDistrib(-2, 2);
                 
-				//mutation
-				//here the mutation consists of multiplying the mutated weight by a random number (-2, 2)
+                //mutation
+                //here the mutation consists of multiplying the mutated weight by a random number (-2, 2)
 
                 if(crossDistrib(generator) <= mutationRate_m*100 )
                 {
@@ -173,23 +172,23 @@ void GeneticTrainer::run(Net *_net, unsigned int _generations, std::function<flo
                 }
             }
 
-			nextPopulation.push_back(offspring1);
-			nextPopulation.push_back(offspring2);
+            nextPopulation.push_back(offspring1);
+            nextPopulation.push_back(offspring2);
 
 
         }
         population_m = nextPopulation;
     }
 
-	_net->setLinks( population_m[eliteIndex] );
+    _net->setLinks( population_m[eliteIndex] );
 
 }
 
-std::vector<Link> GeneticTrainer::randomWeights()
+std::vector<Link> GeneticTrainer::randomWeights(std::vector<Link> _model)
 {
-    //randomize weights according to model_m structure
+    //randomize weights according to _model structure
 
-	std::vector<Link> rC = model_m;
+    std::vector<Link> rC = _model;
 
     std::default_random_engine gen;
     std::uniform_real_distribution<float> weightDistrib(-1, 1);
@@ -197,5 +196,5 @@ std::vector<Link> GeneticTrainer::randomWeights()
     {
         rC[i].weight = weightDistrib(gen);
     }
-	return rC;
+    return rC;
 }

@@ -16,7 +16,6 @@
 *********************************************************************/
 
 #include "../include/net.hpp"
-
 #include <random>
 
 
@@ -62,13 +61,13 @@ float Neuron::compute(std::vector<float> _inputs)
         case NType::BIAS:
             //output already defined
             break;
-		/*
+        /*
         case NType::OUTPUT:
             output = parent->m_outFun(output);
             break;*/
     }
     
-	return output;
+    return output;
 }
 
 /*******************************Net***************************/
@@ -113,11 +112,11 @@ Net::Net(std::vector<Neuron> _neurons, std::vector<Link> _links)
     neuronsCount_m = _neurons.size();
 
     links_m = _links;
-	linksCount_m = _links.size();
+    linksCount_m = _links.size();
 
     for(unsigned int i = 0; i < neuronsCount_m-1; i++)
     {
-		neurons_m[i].id = i;
+        neurons_m[i].id = i;
         neurons_m[i].parent = this;
     }
 }
@@ -143,13 +142,13 @@ std::vector<float> Net::feed(std::vector<float> _inputs)
     //we compute it, because we know that there are no dependencies in the next neurons
     for(unsigned int i = 0; i < linksCount_m; i++)
     {
-		unsigned int idA = links_m[i].a;
-		unsigned int idB = links_m[i].b;
-		float weight = links_m[i].weight;
+        unsigned int idA = links_m[i].a;
+        unsigned int idB = links_m[i].b;
+        float weight = links_m[i].weight;
 
         if(actualID != neurons_m[idA].id)//if actualneuron != link.a
         {
-			neurons_m[idB].sum += neurons_m[idA].compute(_inputs)*weight;
+            neurons_m[idB].sum += neurons_m[idA].compute(_inputs)*weight;
         }
         else //if actualneuron == link.a
         {
@@ -167,10 +166,6 @@ std::vector<float> Net::feed(std::vector<float> _inputs)
             neurons_m[i].output = outFun_m(neurons_m[i].sum);
             outputs.push_back( neurons_m[i].output );
         }
-    }
-
-    for(unsigned int i = 0; i < neurons_m.size(); i++)
-    {
         neurons_m[i].sum = 0.0f;
     }
 
@@ -190,13 +185,13 @@ float Net::computeMSE(std::vector<float> _inputs, std::vector<float> _outputs)
     assert( outputs.size() != 0 );
     #endif
 
-	float error = 0.0f;
-	for (unsigned int i = 0; i < outputs.size(); i++)
-	{
-		error += pow(_outputs[i] - outputs[i], 2);
-	}
+    float error = 0.0f;
+    for (unsigned int i = 0; i < outputs.size(); i++)
+    {
+        error += pow(_outputs[i] - outputs[i], 2);
+    }
 
-	return error / outputs.size();
+    return error / outputs.size();
 }
 
 float Net::computeGlobalMSE(std::vector<Dataset> _ds)
@@ -207,13 +202,13 @@ float Net::computeGlobalMSE(std::vector<Dataset> _ds)
     assert( _ds.size() != 0 );
     #endif
 
-	float error = 0.0f;
-	for (unsigned int i = 0; i < _ds.size(); i++)
-	{
-		error += computeMSE(_ds[i].inputs, _ds[i].outputs);
-	}
+    float error = 0.0f;
+    for (unsigned int i = 0; i < _ds.size(); i++)
+    {
+        error += computeMSE(_ds[i].inputs, _ds[i].outputs);
+    }
 
-	return error / _ds.size();
+    return error / _ds.size();
 }
 
 void Net::setOutputFunction(std::function<float(float)> _actFun)
@@ -243,12 +238,12 @@ unsigned int Net::getSize()
 
 void Net::randWeights(float _a, float _b)
 {
-	std::default_random_engine generator;
-	std::uniform_real_distribution<float> distrib(_a, _b);
-	for (unsigned int i = 0; i < links_m.size(); i++)
-	{
-		links_m[i].weight = distrib(generator);
-	}
+    std::default_random_engine generator;
+    std::uniform_real_distribution<float> distrib(_a, _b);
+    for (unsigned int i = 0; i < links_m.size(); i++)
+    {
+        links_m[i].weight = distrib(generator);
+    }
 }
 
 void Net::setLinks(std::vector<Link> _links)
@@ -261,7 +256,12 @@ std::vector<Link> Net::getLinks()
     return links_m;
 }
 
+void Net::setNeurons(std::vector<Neuron> _neurons)
+{
+    neurons_m = _neurons;
+}
+
 std::vector<Neuron> Net::getNeurons()
 {
-	return neurons_m;
+    return neurons_m;
 }

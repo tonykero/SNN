@@ -79,9 +79,11 @@ set(SOURCES
     "include/snn.hpp"
     "include/util.hpp"
     "include/GeneticTrainer.hpp"
+    "include/BackpropTrainer.hpp"
     "src/net.cpp"
     "src/ffnet.cpp"
     "src/GeneticTrainer.cpp"
+    "src/BackpropTrainer.cpp"
     )
 
 if(BUILD_SHARED)
@@ -107,4 +109,12 @@ if(BUILD_EXAMPLES)
 
     add_executable(FFNet-GeneticTrainer ${SOURCE})
     target_link_libraries(FFNet-GeneticTrainer ${LINK_LIBS})
+
+    #FFNet & BackpropTrainer
+    set(SOURCE
+        "examples/FFNet & BackpropTrainer.cpp"
+        )
+
+    add_executable(FFNet-BackpropTrainer ${SOURCE})
+    target_link_libraries(FFNet-BackpropTrainer ${LINK_LIBS})
 endif()

@@ -41,7 +41,7 @@ namespace snn
             std::vector< std::vector<Link> > population_m;//Vector of Vector of Weights
             std::vector<Link> model_m;
 
+            std::vector<Link> randomWeights(std::vector<Link> _model);
 
-			std::vector<Link> randomWeights();
-	};
+    };
 }
